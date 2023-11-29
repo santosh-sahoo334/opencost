@@ -37,6 +37,7 @@ func Test_UpdateCSV(t *testing.T) {
 							GPUHours:               48,
 							GPUCost:                0.8,
 							NetworkCost:            0.9,
+							LoadBalancerCost:		0.5,
 							NetworkTransferBytes:   10,
 							NetworkReceiveBytes:    11,
 							PVs: map[kubecost.PVKey]*kubecost.PVAllocation{
@@ -49,6 +50,9 @@ func Test_UpdateCSV(t *testing.T) {
 								},
 							}, // 2 PVBytes, 2 PVCost
 							Properties: &kubecost.AllocationProperties{
+								Cluster:		"test-cluster",
+								Node:			"test-node",
+								ProviderID:		"i-123",
 								Namespace:      "test-namespace",
 								Controller:     "test-controller-name",
 								ControllerKind: "test-controller-kind",
@@ -82,6 +86,9 @@ func Test_UpdateCSV(t *testing.T) {
 					Allocations: map[string]*kubecost.Allocation{
 						"test": {
 							Properties: &kubecost.AllocationProperties{
+								Cluster:		"test-cluster",
+								Node:			"test-node",
+								ProviderID:		"i-123",
 								Namespace:      "test-namespace",
 								Controller:     "test-controller-name",
 								ControllerKind: "test-controller-kind",
@@ -102,7 +109,7 @@ func Test_UpdateCSV(t *testing.T) {
 		// uploaded a single file with the data
 		assert.Len(t, model.ComputeAllocationCalls(), 1)
 		assert.Equal(t, `Date,Cluster,NodeName,ProviderID,Namespace,ControllerKind,ControllerName,Pod,Container,CPUCoreUsageAverage,CPUCoreRequestAverage,RAMBytesUsageAverage,RAMBytesRequestAverage,NetworkReceiveBytes,NetworkTransferBytes,GPUs,PVBytes,CPUCost,RAMCost,NetworkCost,PVCost,GPUCost,LoadBalancerCost,TotalCost,Labels,Label_test-label1,Label_test-label2
-2021-01-01,test-cluster,test-node,i-123,test-namespace,test-controller-kind,test-controller-name,test-pod,test-container,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"{""test-label1"":""test-value1"",""test-label2"":""test-value2""}",test-value1,test-value2
+2021-01-01,test-cluster,test-node,i-123,test-namespace,test-controller-kind,test-controller-name,test-pod,test-container,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"{""test-label1"":""test-value1"",""test-label2"":""test-value2""}",test-value1,test-value2
 `, string(storage.Data))
 	})
 
