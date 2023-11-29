@@ -4,7 +4,7 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['pull', 'docker/dockerfile:1.0-experimental']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/ts-cloud-factory-poc/github.com/santosh-sahoo334/opencost-csv-export:${COMMIT_SHA}','--backend','buildkit','.']
+  args: ['build', '-t', 'gcr.io/ts-cloud-factory-poc/github.com/santosh-sahoo334/opencost-csv-export:${COMMIT_SHA}','.']
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/ts-cloud-factory-poc/github.com/santosh-sahoo334/opencost-csv-export:${COMMIT_SHA}']
   env:
