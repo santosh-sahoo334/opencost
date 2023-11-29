@@ -177,6 +177,24 @@ func (e *csvExporter) writeCSVToWriter(ctx context.Context, w io.Writer, dates [
 			},
 		},
 		{
+			column: "Cluster",
+			value: func(data rowData) string {
+				return data.alloc.Properties.Cluster
+			},
+		},
+		{
+			column: "NodeName",
+			value: func(data rowData) string {
+				return data.alloc.Properties.Node
+			},
+		},
+		{
+			column: "ProviderID",
+			value: func(data rowData) string {
+				return data.alloc.Properties.ProviderID
+			},
+		},
+		{
 			column: "Namespace",
 			value: func(data rowData) string {
 				return data.alloc.Properties.Namespace
@@ -285,6 +303,12 @@ func (e *csvExporter) writeCSVToWriter(ctx context.Context, w io.Writer, dates [
 			},
 		},
 		{
+			column: "LoadBalancerCost",
+			value: func(data rowData) string {
+				return fmtFloat(data.alloc.LoadBalancerTotalCost())
+			},
+		},
+		{
 			column: "TotalCost",
 			value: func(data rowData) string {
 				return fmtFloat(data.alloc.TotalCost())
@@ -312,12 +336,15 @@ func (e *csvExporter) writeCSVToWriter(ctx context.Context, w io.Writer, dates [
 	csvDef = append(csvDef)
 
 	header := make([]string, 0, len(csvDef))
+	fmt.Println("CSV Col List:", header)
 	for _, def := range csvDef {
 		header = append(header, def.column)
 	}
 
 	csvWriter := csv.NewWriter(w)
 	lines := 0
+	// Counter to track the number of rows printed
+	rowsPrinted := 0
 	err := csvWriter.Write(header)
 	if err != nil {
 		return fmt.Errorf("failed to write header: %w", err)
@@ -340,6 +367,12 @@ func (e *csvExporter) writeCSVToWriter(ctx context.Context, w io.Writer, dates [
 			row := make([]string, 0, len(csvDef))
 			for _, def := range csvDef {
 				row = append(row, def.value(rowData{date: date, alloc: alloc}))
+			}
+			// Increment the counter and break the loop if 5 rows are printed
+			rowsPrinted++
+			if rowsPrinted <= 5 {
+				// Print the contents of the current row to the console
+				fmt.Println("Sample Row From CSV:", row)
 			}
 			err := csvWriter.Write(row)
 			if err != nil {
