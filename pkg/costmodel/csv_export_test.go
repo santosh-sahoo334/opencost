@@ -66,8 +66,8 @@ func Test_UpdateCSV(t *testing.T) {
 		assert.Len(t, model.ComputeAllocationCalls(), 1)
 		assert.Equal(t, time.Date(2021, 1, 1, 0, 0, 0, 0, time.UTC), model.ComputeAllocationCalls()[0].Start)
 		assert.Equal(t, time.Date(2021, 1, 2, 0, 0, 0, 0, time.UTC), model.ComputeAllocationCalls()[0].End)
-		assert.Equal(t, `Date,Namespace,ControllerKind,ControllerName,Pod,Container,CPUCoreUsageAverage,CPUCoreRequestAverage,RAMBytesUsageAverage,RAMBytesRequestAverage,NetworkReceiveBytes,NetworkTransferBytes,GPUs,PVBytes,CPUCost,RAMCost,NetworkCost,PVCost,GPUCost,TotalCost
-2021-01-01,test-namespace,test-controller-kind,test-controller-name,test-pod,test-container,0.1,0.2,0.4,0.5,11,10,2,2,0.3,0.6,0.9,2,0.8,4.6000000000000005
+		assert.Equal(t, `Date,Cluster,NodeName,ProviderID,Namespace,ControllerKind,ControllerName,Pod,Container,CPUCoreUsageAverage,CPUCoreRequestAverage,RAMBytesUsageAverage,RAMBytesRequestAverage,NetworkReceiveBytes,NetworkTransferBytes,GPUs,PVBytes,CPUCost,RAMCost,NetworkCost,PVCost,GPUCost,LoadBalancerCost,TotalCost
+2021-01-01,test-cluster,test-node,i-123,test-namespace,test-controller-kind,test-controller-name,test-pod,test-container,0.1,0.2,0.4,0.5,11,10,2,2,0.3,0.6,0.9,2,0.8,0.5,4.6000000000000005
 `, string(storage.Data))
 	})
 
@@ -101,8 +101,8 @@ func Test_UpdateCSV(t *testing.T) {
 		require.NoError(t, err)
 		// uploaded a single file with the data
 		assert.Len(t, model.ComputeAllocationCalls(), 1)
-		assert.Equal(t, `Date,Namespace,ControllerKind,ControllerName,Pod,Container,CPUCoreUsageAverage,CPUCoreRequestAverage,RAMBytesUsageAverage,RAMBytesRequestAverage,NetworkReceiveBytes,NetworkTransferBytes,GPUs,PVBytes,CPUCost,RAMCost,NetworkCost,PVCost,GPUCost,TotalCost,Labels,Label_test-label1,Label_test-label2
-2021-01-01,test-namespace,test-controller-kind,test-controller-name,test-pod,test-container,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"{""test-label1"":""test-value1"",""test-label2"":""test-value2""}",test-value1,test-value2
+		assert.Equal(t, `Date,Cluster,NodeName,ProviderID,Namespace,ControllerKind,ControllerName,Pod,Container,CPUCoreUsageAverage,CPUCoreRequestAverage,RAMBytesUsageAverage,RAMBytesRequestAverage,NetworkReceiveBytes,NetworkTransferBytes,GPUs,PVBytes,CPUCost,RAMCost,NetworkCost,PVCost,GPUCost,LoadBalancerCost,TotalCost,Labels,Label_test-label1,Label_test-label2
+2021-01-01,test-cluster,test-node,i-123,test-namespace,test-controller-kind,test-controller-name,test-pod,test-container,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"{""test-label1"":""test-value1"",""test-label2"":""test-value2""}",test-value1,test-value2
 `, string(storage.Data))
 	})
 
