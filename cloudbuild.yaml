@@ -1,10 +1,10 @@
 steps:
-  env:
-    - "DOCKER_BUILDKIT=1"
 - name: 'gcr.io/cloud-builders/docker'
   args: ['pull', 'docker/dockerfile:experimental']
 - name: 'gcr.io/cloud-builders/docker'
   args: ['pull', 'docker/dockerfile:1.0-experimental']
+  env:
+    - "DOCKER_BUILDKIT=1"
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'gcr.io/ts-cloud-factory-poc/github.com/santosh-sahoo334/opencost-csv-export:${COMMIT_SHA}','.']
 - name: 'gcr.io/cloud-builders/docker'
