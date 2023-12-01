@@ -225,6 +225,18 @@ func (e *csvExporter) writeCSVToWriter(ctx context.Context, w io.Writer, dates [
 			},
 		},
 		{
+			column: "PV_DETAILS",
+			value: func(data rowData) string {
+				return data.alloc.PVs
+			},
+		},
+		{
+			column: "LB_DETAILS",
+			value: func(data rowData) string {
+				return data.alloc.LoadBalancers
+			},
+		},
+		{
 			column: "CPUCoreUsageAverage",
 			value: func(data rowData) string {
 				return fmtFloat(data.alloc.CPUCoreUsageAverage)
@@ -237,6 +249,12 @@ func (e *csvExporter) writeCSVToWriter(ctx context.Context, w io.Writer, dates [
 			},
 		},
 		{
+			column: "CPUCoreHours",
+			value: func(data rowData) string {
+				return fmtFloat(data.alloc.CPUCores())
+			},
+		},
+		{
 			column: "RAMBytesUsageAverage",
 			value: func(data rowData) string {
 				return fmtFloat(data.alloc.RAMBytesUsageAverage)
@@ -246,6 +264,12 @@ func (e *csvExporter) writeCSVToWriter(ctx context.Context, w io.Writer, dates [
 			column: "RAMBytesRequestAverage",
 			value: func(data rowData) string {
 				return fmtFloat(data.alloc.RAMBytesRequestAverage)
+			},
+		},
+		{
+			column: "RAMByteHours",
+			value: func(data rowData) string {
+				return fmtFloat(data.alloc.RAMBytes())
 			},
 		},
 		{
@@ -306,6 +330,18 @@ func (e *csvExporter) writeCSVToWriter(ctx context.Context, w io.Writer, dates [
 			column: "LoadBalancerCost",
 			value: func(data rowData) string {
 				return fmtFloat(data.alloc.LoadBalancerTotalCost())
+			},
+		},
+		{
+			column: "SharedCost",
+			value: func(data rowData) string {
+				return fmtFloat(data.alloc.SharedTotalCost())
+			},
+		},
+		{
+			column: "ExternalCost",
+			value: func(data rowData) string {
+				return fmtFloat(data.alloc.ExternalCost())
 			},
 		},
 		{
