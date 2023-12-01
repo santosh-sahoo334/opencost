@@ -227,13 +227,19 @@ func (e *csvExporter) writeCSVToWriter(ctx context.Context, w io.Writer, dates [
 		{
 			column: "PV_DETAILS",
 			value: func(data rowData) string {
-				return data.alloc.PVs
+				return data.alloc.PVs.ProviderID
 			},
 		},
 		{
-			column: "LB_DETAILS",
+			column: "LoadBalancer_Service",
 			value: func(data rowData) string {
-				return data.alloc.LoadBalancers
+				return data.alloc.LoadBalancers.Service
+			},
+		},
+		{
+			column: "LoadBalancer_IP",
+			value: func(data rowData) string {
+				return data.alloc.LoadBalancers.Ip
 			},
 		},
 		{
@@ -341,7 +347,7 @@ func (e *csvExporter) writeCSVToWriter(ctx context.Context, w io.Writer, dates [
 		{
 			column: "ExternalCost",
 			value: func(data rowData) string {
-				return fmtFloat(data.alloc.ExternalCost())
+				return fmtFloat(data.alloc.ExternalCost)
 			},
 		},
 		{
